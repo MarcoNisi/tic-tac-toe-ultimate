@@ -5,9 +5,6 @@ module.exports = {
     extend: {
       width: {
         clamped: 'clamp(50%, 800px, 100%)'
-      },
-      fontSize: {
-        '16xl': '16rem'
       }
     },
   },

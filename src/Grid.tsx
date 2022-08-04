@@ -105,7 +105,7 @@ const Grid: Component<CellProps> = (props) => {
       </For>
       {props.won && (
         <div class="absolute w-full h-full bg-slate-400 flex justify-center items-center">
-          <span class="text-red-400 text-16xl">{props.won}</span>
+          <span class="text-red-400 text-8xl">{props.won}</span>
         </div>
       )}
     </div>

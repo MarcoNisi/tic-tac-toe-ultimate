@@ -20,6 +20,7 @@ const App: Component = () => {
   const [won, setWon] = createSignal<GridWon[]>([])
   const [focus, setFocus] = createSignal<number | null>(null)
   const [gridValues, setGridValues] = createSignal(initialGridValues)
+  const [end, setEnd] = createSignal(false)
   const onChangeTurn = (i: number) => {
     if (turn() === 'O') {
       setTurn('X')
@@ -33,7 +34,7 @@ const App: Component = () => {
     }
   }
   const isDisabled = (focus: null | number, i: number) => {
-    return focus !== null && focus !== i
+    return (focus !== null && focus !== i) || end()
   }
   const isWon = (gridWon: GridWon[], i: number) => {
     return gridWon.find((w) => w.index === i)?.player
@@ -49,7 +50,9 @@ const App: Component = () => {
   })
   createEffect(() => {
     const winner = isWinner(gridValues())
-    console.log('winner', winner)
+    if (winner) {
+      setEnd(true)
+    }
   })
   return (
     <div class="h-full flex items-center p-3">

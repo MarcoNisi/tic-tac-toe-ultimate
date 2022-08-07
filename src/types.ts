@@ -11,3 +11,7 @@ export interface GridWon {
   index: number
   player: Player
 }
+export interface LocalValues {
+  value: CellValue
+  isWinning: boolean
+}

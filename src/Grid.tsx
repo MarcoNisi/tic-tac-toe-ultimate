@@ -5,6 +5,7 @@ import { isAWinningCell, isWinner } from './utils'
 
 interface CellProps {
   turn: Accessor<Turn>
+  gameIndex: Accessor<number>
   onChangeTurn: (i: number) => void
   disabled?: boolean
   focused?: boolean
@@ -17,44 +18,10 @@ interface LocalValues {
   isWinning: boolean
 }
 
-const startingValues: LocalValues[] = [
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-  {
-    isWinning: false,
-    value: '',
-  },
-]
+const startingValues: LocalValues[] = Array.from({ length: 9 }).map(() => ({
+  isWinning: false,
+  value: '',
+}))
 
 const Grid: Component<CellProps> = (props) => {
   const [localValues, setLocalValues] = createSignal<LocalValues[]>(startingValues)
@@ -92,6 +59,12 @@ const Grid: Component<CellProps> = (props) => {
       })
     }
   })
+  createEffect(() => {
+    if (props.gameIndex()) {
+      setLocalValues(startingValues)
+      setWon(null)
+    }
+  })
   return (
     <div
       class={`grid overflow-hidden relative grid-cols-3 grid-rows-3 border border-black w-full h-full ${props.focused && 'bg-slate-400'} ${
@@ -100,7 +73,7 @@ const Grid: Component<CellProps> = (props) => {
     >
       <For each={localValues()}>
         {(localValue, i) => {
-          return <Cell value={localValue.value} onClick={() => onClick(i())} winningCell={localValue.isWinning} />
+          return <Cell value={localValue.value} onClick={() => onClick(i())} disabled={props.disabled} winningCell={localValue.isWinning} />
         }}
       </For>
       {props.won && (
